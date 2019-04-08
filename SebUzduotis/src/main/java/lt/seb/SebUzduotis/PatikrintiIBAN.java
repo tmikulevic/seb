@@ -5,6 +5,9 @@ import java.util.*;
 
 public class PatikrintiIBAN {
 	
+	/*
+	 * Metodas skirtingiems saliu kodams, nes kiekviena salis turi skirtinga IBAN formata
+	 * */
 	public static Map<String, Integer> makeFormats() {
 		final String saliuFormatai = "AL28,AD24,AT20,AZ28,BE16,BH22,BA20,BR29,BG22," +
 				"HR21,CY28,CZ24,DK18,DO28,EE20,FO18,FI18,FR27,GE22,DE22,GI23," +
@@ -23,35 +26,56 @@ public class PatikrintiIBAN {
 	
 	public static boolean IBANPatikrinimas(String IBAN) {
 
-		System.out.println("Pradzioj: " + IBAN);
-		int len = IBAN.length();
-		if (len < 4 || !IBAN.matches("[0-9A-Z]+") || makeFormats().getOrDefault(IBAN.substring(0, 2), 0) != len)
+		int ilgis = IBAN.length();
+		
+		/*
+		 * Patikrina ar atitinka kazkokios salies koda
+		 * */
+		if (ilgis < 4 || !IBAN.matches("[0-9A-Z]+") || makeFormats().getOrDefault(IBAN.substring(0, 2), 0) != ilgis)
 			return false;
-		 
+		/*
+		 * 4 pradiniai simboliai perkeliami i pabaiga
+		 * */
 		IBAN = IBAN.substring(4) + IBAN.substring(0, 4);
-		 
+		/*
+		 * raide pakeiciamos skaiciais
+		 * */
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < len; i++)
+		for (int i = 0; i < ilgis; i++)
 			sb.append(Character.digit(IBAN.charAt(i), 36));
 		 
 		BigInteger bigInt = new BigInteger(sb.toString());
-		 
-		return bigInt.mod(BigInteger.valueOf(97)).intValue() == 1;
-
-	
 		
-		//return false;
+		/*
+		 * skaiciuojama mod 97, jei gaunama liekana 1, reiskia, kad IBAN validus
+		 * */
+		return bigInt.mod(BigInteger.valueOf(97)).intValue() == 1;
 	}
 	
 	 public static void main(String[] args) {
-		 //Scanner scan = new Scanner(System.in);
-			//String s = scan.next();
-	        String[] ibans = {
-	                "GB82WEST12345698765432",
-	                "GB81WEST12345698765432",
-	                "SA0380000000608010167519",
-	                "DE13äöü_12341234123412"};
-	        for (String iban : ibans)
-	            System.out.printf("%s is %s.%n", iban, IBANPatikrinimas(iban) ? "valid" : "not valid");
-	    }
+		System.out.println("Tai yra IBAN numerio tikrinimas, pasirinkite norima uzduoti:");
+		System.out.println("1. IBAN tikrinimas konsoleje");
+		System.out.println("2. IBAN tikrinimas is failo");
+		System.out.println("3. IBAN tikrinimas REST");
+		 
+
+		Scanner ivestis;
+		int pasirinkimas;
+			
+		while(true) {
+			System.out.println("Pasirinkite uzduoti:");
+			ivestis = new Scanner(System.in);
+			pasirinkimas = ivestis.nextInt();
+			if (pasirinkimas==1) {
+				System.out.println("Ivesk savo IBAN:");
+				ivestis = new Scanner(System.in);
+				String iban = ivestis.next();
+				System.out.printf("%s yra %s.%n", iban, IBANPatikrinimas(iban) ? "tinkamas" : "netinkamas");
+			}
+			else {
+				System.out.println("Darbas baigtas");
+				break;
+			}
+		}
+	 }
 }
