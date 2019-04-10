@@ -38,13 +38,17 @@ public class PatikrintiFailoIBAN {
 	  catch (Exception e)
 	  {
 	    System.err.format("Ivyko klaida faile '%s'.", failoPavadinimas);
-	    e.printStackTrace();
+	    //e.printStackTrace();
 	    return null;
 	  }
 	}
 	
 	private static void irasomeIFaila(ArrayList<String> tekstas, String failoPavadinimas) {
 
+		if (tekstas == null) {
+			return;
+		}
+		
 		BufferedWriter bw = null;
 		FileWriter fw = null;
 		

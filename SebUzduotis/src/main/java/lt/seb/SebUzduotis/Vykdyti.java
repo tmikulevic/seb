@@ -13,12 +13,17 @@ public class Vykdyti {
 		spausdintiPradziosteksta();
 		Scanner ivestis;
 		Scanner IBANas;
-		int pasirinkimas;
+		int pasirinkimas = 0;
 			
 		while(true) {
 			System.out.println("Pasirinkite uzduoti:");
 			ivestis = new Scanner(System.in);
-			pasirinkimas = ivestis.nextInt();
+			try{
+				pasirinkimas = ivestis.nextInt();
+			}
+			catch(Exception e) {
+				System.out.println("blogas pasirinkimas");
+			}
 			if (pasirinkimas==1) {
 				System.out.println("Ivesk savo IBAN:");
 				IBANas = new Scanner(System.in);
