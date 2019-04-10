@@ -1,5 +1,4 @@
 package lt.seb.SebUzduotis;
-import java.util.Scanner;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -51,31 +50,4 @@ public class PatikrintiIBAN {
 		 * */
 		return bigInt.mod(BigInteger.valueOf(97)).intValue() == 1;
 	}
-	
-	 public static void main(String[] args) {
-		System.out.println("Tai yra IBAN numerio tikrinimas, pasirinkite norima uzduoti:");
-		System.out.println("1. IBAN tikrinimas konsoleje");
-		System.out.println("2. IBAN tikrinimas is failo");
-		System.out.println("3. IBAN tikrinimas REST");
-		 
-
-		Scanner ivestis;
-		int pasirinkimas;
-			
-		while(true) {
-			System.out.println("Pasirinkite uzduoti:");
-			ivestis = new Scanner(System.in);
-			pasirinkimas = ivestis.nextInt();
-			if (pasirinkimas==1) {
-				System.out.println("Ivesk savo IBAN:");
-				ivestis = new Scanner(System.in);
-				String iban = ivestis.next();
-				System.out.printf("%s yra %s.%n", iban, IBANPatikrinimas(iban) ? "tinkamas" : "netinkamas");
-			}
-			else {
-				System.out.println("Darbas baigtas");
-				break;
-			}
-		}
-	 }
 }
